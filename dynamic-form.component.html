@@ -1,0 +1,11 @@
+<h3>Data stored in the database</h3>
+<ul>
+<li *ngFor="let qbase of qbases">
+{{qbase | json}}
+</li>
+</ul>
+<form [formGroup]="form">
+    <div *ngFor="let qbase of qbases">
+        <app-question [qbase]="qbase" [form]="form"></app-question>
+    </div>
+</form>
