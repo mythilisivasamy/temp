@@ -1,0 +1,123 @@
+<h2>{{title}}</h2>
+<form [formGroup]="questionbase" novalidate>
+  <div>
+  <table border="1" width="100%">
+    <tr>
+      <td colSpan="3">
+         <label for="name">Enter Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder="Enter name"
+            formControlName="name"
+            required
+          />
+       </td>
+       </tr>
+       <tr>
+        <td>
+          <label for="category">Category Name</label>
+          <input type="text" id="category" formControlName="categoryName" [disabled]="true"><hr/>
+          <label for="categoryId">Category Id</label>
+          <input type="text" id="categoryId" formControlName="categoryId">
+            
+        </td>
+
+        <td>
+          <button (click)="addCategory()">Add Category</button>
+          <div *ngIf="isNewCategory">
+            <label for="newCategory">Enter New Category </label>
+            <input type="text" id="newCategory" #category />
+            <button (click)="addNewCategory(category.value)">Set Category</button>
+          </div>
+        </td>
+        <td>
+          <div>
+            <label for="selectcategory">Select Category:</label>
+              <select id="selectcategory" #temp (change)="setCategory(temp.value)">
+                <option selected>Select Category</option>
+                  <ng-container  *ngFor="let category of category$">
+                      <option [value]="category.id">{{category.name}}</option>
+                  </ng-container>
+              </select>
+            </div>
+           
+        </td>
+       </tr>
+       <tr>
+        <td>
+          <label for="qlabel">Question Label</label>
+          <input type="text" id="qlabel" formControlName="QLabel">
+        </td>
+        <td colspan="2">
+          <label for="qtitle">Question Title</label>
+          <input type="text" id="qtitle" formControlName="QTitle">
+        </td>
+       </tr>
+       <tr>
+        <td>
+          <label for="ansoption">Answer Options</label>
+          <select id="ansoption" formControlName="ans_option">
+            <option value="">Select Option</option>
+            <ng-container  *ngFor="let i of _ansOptions">
+              <option [value]="i">{{i}}</option>
+          </ng-container>
+          </select>
+        </td>
+        <td>
+          <label for="anstype">Answer Type</label>
+          <select name="" id="anstype" formControlName="ans_type">
+            <option value="">Select Answer Type</option>
+            <ng-container  *ngFor="let type of _ansType">
+              <option [value]="type">{{type}}</option>
+          </ng-container>
+          </select>
+        </td>
+        <td>
+          <label for="level">Add Levels</label>
+          <select  id="level" formControlName="level">
+            <option value="">Select Level</option>
+            <ng-container  *ngFor="let i of _ansOptions">
+              <option [value]="i">{{i}}</option>
+          </ng-container>
+          </select>
+        </td>
+       </tr>
+       <tr>
+        <td colspan="3">
+          <button (click)="setAnswers()">Set Answers</button>
+        </td>
+       </tr>
+       </table>
+       <table>
+        <tr>
+          <td>
+              <div formArrayName="answers">
+                <div *ngFor="let ctrl of answers.controls;let ansIndex=index">
+                 <div [formGroupName]="ansIndex">
+                    <label for="ctrl-{{ansIndex}}">Answer:{{ansIndex}}</label>
+                    <input id="ctrl-{{ansIndex}}" type="text" formControlName="answer">
+                    <div formArrayName="scores">
+                      <div *ngFor="let score of getScores(ansIndex).controls;let scoreIndex=index">
+                        <div [formGroupName]="scoreIndex">
+                        <label for="ctrl-{{scoreIndex}}">Score:{{scoreIndex}}</label>
+                        <input id="ctrl-{{scoreIndex}}" type="text" formControlName="score">
+                        </div>
+                      </div>
+                    </div>
+                   </div>
+                   <hr/>
+                  </div>
+                <hr/>
+              </div>
+          </td>
+          
+        </tr>
+      </table>
+         </div>
+
+   </form>
+   <hr/>
+   <p>Form Value: {{questionbase.value | json }}</p>
+   
